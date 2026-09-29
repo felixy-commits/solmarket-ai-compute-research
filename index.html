@@ -28,11 +28,19 @@
   }
   .exec-summary .exec-tag { margin: 0 0 12px; font-size: 13px; color: #b8c0cc; line-height: 1.5; }
   .exec-summary .exec-tag strong { color: var(--gold); font-weight: 700; }
-  table.exec-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  table.exec-table th, table.exec-table td {
-    border: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; line-height: 1.45;
+  .exec-summary h3.exec-title { margin: 0 0 10px; font-size: 15px; font-weight: 650; color: var(--accent); }
+  table.exec-table {
+    width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px;
+    border: 1px solid rgba(94,184,232,.35); border-radius: 10px; overflow: hidden;
   }
-  table.exec-table th { color: var(--muted); background: rgba(255,255,255,.03); font-weight: 600; font-size: 11px; }
+  table.exec-table th, table.exec-table td {
+    border-bottom: 1px solid var(--line); border-right: 1px solid var(--line);
+    padding: 11px 12px; text-align: left; vertical-align: top; line-height: 1.45;
+  }
+  table.exec-table tr:last-child td { border-bottom: none; }
+  table.exec-table th:last-child, table.exec-table td:last-child { border-right: none; }
+  table.exec-table thead th { color: #c5cdd8; background: rgba(94,184,232,.14); font-weight: 650; font-size: 12px; }
+  table.exec-table tbody tr:nth-child(even) td { background: rgba(255,255,255,.02); }
   table.exec-table td:first-child { font-weight: 650; color: #dce2ea; white-space: nowrap; }
   table.exec-table td strong { color: var(--gold); font-weight: 700; }
   @media (max-width: 720px) {
@@ -210,9 +218,40 @@
   <h1>SolMarket · 短视频竞猜预测 · AI训练与token出海可行性研究报告</h1>
   <p class="lead">预测市场 × 短视频：论证四大算力板块可建设、可扩展、可回收；并附<strong>资本运作与 IPO 时间表</strong>（与算力投入节点对齐）。金额为工程测算。</p>
 
-  <p class="exec-lead">算力与 AI 三年投入约 <strong>$26–38M</strong>（Y1 <strong>$2.6–3.9M</strong> → Y2 GPU 等 <strong>$10–15M</strong> → Y3 多区自建 <strong>$13.5–19.5M</strong>），<strong>AI 竞猜预测运营边投边回本</strong>：<strong>上线后半年</strong> 平台盈利（10 万用户 · ARR ~<strong>$261–290万</strong>）。
-    <span class="yr"><strong>Y2</strong> 100 万用户 · 平台 ARR ~<strong>$9000万</strong>，两年算力累计 ~<strong>$13–19M</strong>，算力占收入 <strong>8–22%</strong>。</span>
-    <span class="yr"><strong>Y3</strong> 500 万用户 · 平台 ARR <strong>$4.5亿+</strong>，算力商品 +<strong>$8–20M</strong>，经营性收入覆盖三年算力总投入，<strong>C 轮 / IPO</strong>（$200B → <strong>$500B</strong>）与 GPU 固定资产入表。</span></p>
+  <div class="exec-summary">
+    <h3 class="exec-title">三年路径一览（表格）</h3>
+    <p class="exec-tag"><strong>AI 竞猜预测运营边投边回本</strong> · 算力与 AI 三年合计 <strong>$26–38M</strong>（Y1 <strong>$2.6–3.9M</strong> → Y2 GPU <strong>$10–15M</strong> → Y3 多区自建 <strong>$13.5–19.5M</strong>）</p>
+    <table class="exec-table">
+      <thead>
+      <tr>
+        <th>阶段</th><th>算力投入（本年）</th><th>用户</th><th>平台 ARR（估）</th><th>回收 / 资本节点</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>上线后半年</td>
+        <td>含于 Y1</td>
+        <td>10 万</td>
+        <td>~<strong>$261–290万</strong></td>
+        <td>平台盈利</td>
+      </tr>
+      <tr>
+        <td>Y2</td>
+        <td><strong>$10–15M</strong></td>
+        <td>100 万</td>
+        <td>~<strong>$9000万</strong></td>
+        <td>两年算力累计 ~<strong>$13–19M</strong> · 算力占收入 <strong>8–22%</strong></td>
+      </tr>
+      <tr>
+        <td>Y3</td>
+        <td><strong>$13.5–19.5M</strong></td>
+        <td>500 万</td>
+        <td><strong>$4.5亿+</strong> · 算力商品 +<strong>$8–20M</strong></td>
+        <td>收入覆盖三年算力总投入 · <strong>C 轮 / IPO</strong>（$200B → <strong>$500B</strong>）· GPU 固定资产入表</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 
   <div class="verdict">
     <svg class="ico"><use href="#i-check"/></svg>

@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SolMarket · 短视频竞猜预测 · AI训练与token出海可行性研究报告</title>
+<link rel="canonical" href="https://felixy-commits.github.io/solmarket-ai-compute-research/">
+<meta property="og:url" content="https://felixy-commits.github.io/solmarket-ai-compute-research/">
+<meta property="og:title" content="SolMarket · AI训练与token出海可行性研究报告">
+<meta property="og:type" content="article">
 <style>
   :root {
     --bg: #0c0d10; --card: #15181f; --card2: #1a1e27;
@@ -76,6 +80,33 @@
   .icon-card .ico-lg { width: 32px; height: 32px; margin: 0 auto 8px; color: var(--accent); }
   .icon-card b { display: block; font-size: 18px; margin-bottom: 4px; }
   .icon-card span { font-size: 11px; color: var(--muted); }
+  .icon-grid.invest-bar .icon-card {
+    background: linear-gradient(180deg, rgba(212,183,106,.18), rgba(212,183,106,.08));
+    box-shadow: inset 0 0 0 1px rgba(212,183,106,.55);
+  }
+  .icon-grid.invest-bar .icon-card b,
+  .icon-grid.invest-bar .icon-card .ico-lg { color: var(--gold); }
+  .icon-grid.invest-bar .icon-card span {
+    color: #e8d9a8; font-size: 12px; line-height: 1.4; font-weight: 500;
+  }
+  .icon-card.highlight, .invest-bar .icon-card.highlight {
+    background: rgba(212,183,106,.14);
+    box-shadow: inset 0 0 0 1px rgba(212,183,106,.5);
+  }
+  .icon-card.highlight b, .icon-card.highlight .ico-lg { color: var(--gold); }
+  .icon-card.highlight span { color: #d4c89a; }
+  .tl-item.highlight {
+    background: linear-gradient(180deg, rgba(212,183,106,.14), rgba(212,183,106,.06));
+    border-radius: 10px; padding: 6px 8px 10px; margin-right: 4px;
+    box-shadow: inset 0 0 0 1px rgba(212,183,106,.5);
+  }
+  .tl-item.highlight .tl-dot {
+    border-color: var(--gold); background: rgba(212,183,106,.22);
+    box-shadow: 0 0 14px rgba(212,183,106,.4);
+  }
+  .tl-item.highlight .tl-dot .ico { color: var(--gold); }
+  .tl-item.highlight b { color: var(--gold); font-size: 13px; }
+  .tl-item.highlight span { color: #e8d9a8; font-size: 12px; line-height: 1.45; }
 
   .icon-rows { display: flex; flex-direction: column; gap: 8px; }
   .icon-row {
@@ -85,7 +116,19 @@
   .icon-row .ico { width: 22px; height: 22px; color: var(--accent); margin: 0 auto; }
   .icon-row .t { font-size: 13px; }
   .icon-row .t small { display: block; color: var(--muted); font-size: 11px; margin-top: 2px; }
-  .icon-row .v { font-size: 12px; color: var(--gold); white-space: nowrap; text-align: right; }
+  .icon-row .v {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 2px;
+    min-width: 92px; text-align: right;
+  }
+  .icon-row .v .v-label { font-size: 9px; color: var(--muted); font-weight: 500; line-height: 1.25; }
+  .icon-row .v strong { font-size: 13px; color: var(--gold); font-weight: 700; white-space: nowrap; }
+  .icon-row .v .v-note { font-size: 10px; color: #9aa3af; white-space: nowrap; }
+  .icon-rows.compute-ratio { margin-top: 4px; }
+  .icon-rows.compute-ratio .icon-rows-head {
+    display: grid; grid-template-columns: 40px 1fr auto; gap: 12px; padding: 0 12px 4px;
+    font-size: 10px; color: var(--muted); text-transform: none;
+  }
+  .icon-rows.compute-ratio .icon-rows-head span:last-child { text-align: right; min-width: 92px; }
 
   .timeline-cap {
     display: flex; gap: 0; overflow-x: auto; padding: 8px 0 16px; margin: 12px 0;
@@ -162,9 +205,8 @@
   }
   .profit-banner .icon-card { text-align: left; padding: 12px 14px; }
   .profit-banner .icon-card b { font-size: 16px; }
-  .val-strip {
-    display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 12px;
-  }
+  .val-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 12px; }
+  .val-strip-row { display: contents; }
   .val-strip .icon-card { padding: 10px 8px; }
   .val-strip .icon-card b { font-size: 13px; }
   .val-strip .icon-card span { font-size: 10px; line-height: 1.35; }
@@ -188,9 +230,71 @@
 
   .fn { font-size: 11px; color: var(--muted); margin-top: 12px; }
   @media (max-width: 720px) {
-    .pillars, .icon-grid, .scene-grid, .fund-pay, .asset-cards, .profit-banner, .val-strip { grid-template-columns: 1fr; }
-    .pillar { grid-template-columns: 1fr; }
-    .pillar .icon-wrap { width: 48px; height: 48px; }
+    .icon-grid, .scene-grid, .asset-cards { grid-template-columns: 1fr; }
+    .val-strip {
+      display: flex; flex-direction: column; gap: 8px; margin-top: 12px;
+    }
+    .val-strip-row {
+      display: flex; gap: 0;
+      background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    }
+    .val-strip-row .icon-card {
+      flex: 1; min-width: 0; padding: 10px 6px; border: none; border-radius: 0;
+      border-right: 1px solid var(--line); background: transparent;
+    }
+    .val-strip-row .icon-card:last-child { border-right: none; }
+    .val-strip-row .icon-card .ico-lg { width: 22px; height: 22px; margin-bottom: 6px; }
+    .val-strip-row .icon-card b { font-size: 11px; line-height: 1.2; margin-bottom: 3px; }
+    .val-strip-row .icon-card span { font-size: 9px; line-height: 1.35; }
+    .profit-banner {
+      grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 12px 0;
+    }
+    .profit-banner .icon-card {
+      text-align: center; padding: 12px 8px;
+    }
+    .profit-banner .icon-card .ico-lg { width: 24px; height: 24px; margin-bottom: 6px; }
+    .profit-banner .icon-card b { font-size: 13px; line-height: 1.25; }
+    .profit-banner .icon-card span { font-size: 10px; line-height: 1.35; }
+    .profit-banner .profit-hero b { font-size: 13px; color: #8ef0b8; }
+    .profit-banner .profit-hero .profit-mark { font-size: 16px; }
+    .pillars {
+      grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 12px 0;
+    }
+    .pillar {
+      grid-template-columns: 1fr; padding: 12px 8px; gap: 8px; text-align: center;
+    }
+    .pillar .icon-wrap { width: 40px; height: 40px; margin: 0 auto; border-radius: 10px; }
+    .pillar .icon-wrap svg { width: 22px; height: 22px; }
+    .pillar h3 { font-size: 12px; margin-bottom: 4px; }
+    .pillar p { font-size: 10px; margin-bottom: 8px; line-height: 1.35; }
+    .pillar .chips { justify-content: center; gap: 4px; }
+    .pillar .chip { font-size: 9px; padding: 2px 5px; }
+    .fund-pay {
+      display: flex; gap: 0; margin-top: 14px;
+      background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    }
+    .fund-pay .icon-card {
+      flex: 1; min-width: 0; padding: 10px 6px; border: none; border-radius: 0;
+      border-right: 1px solid var(--line); background: transparent;
+    }
+    .fund-pay .icon-card:last-child { border-right: none; }
+    .fund-pay .icon-card .ico-lg { width: 22px; height: 22px; margin-bottom: 6px; }
+    .fund-pay .icon-card b { font-size: 11px; line-height: 1.2; margin-bottom: 3px; }
+    .fund-pay .icon-card span { font-size: 9px; line-height: 1.35; }
+    .icon-grid.invest-bar {
+      display: flex; gap: 0;
+      background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    }
+    .icon-grid.invest-bar .icon-card {
+      flex: 1; min-width: 0; padding: 10px 6px; border: none; border-radius: 0;
+      border-right: 1px solid rgba(212,183,106,.25);
+      background: linear-gradient(180deg, rgba(212,183,106,.16), rgba(212,183,106,.06));
+      box-shadow: none;
+    }
+    .icon-grid.invest-bar .icon-card:last-child { border-right: none; }
+    .icon-grid.invest-bar .icon-card .ico-lg { width: 22px; height: 22px; margin-bottom: 6px; }
+    .icon-grid.invest-bar .icon-card b { font-size: 12px; line-height: 1.2; margin-bottom: 3px; }
+    .icon-grid.invest-bar .icon-card span { font-size: 11px; line-height: 1.4; }
   }
 </style>
 </head>
@@ -219,7 +323,7 @@
   <p class="lead">预测市场 × 短视频：论证四大算力板块可建设、可扩展、可回收；并附<strong>资本运作与 IPO 时间表</strong>（与算力投入节点对齐）。金额为工程测算。</p>
 
   <div class="exec-summary">
-    <h3 class="exec-title">三年路径一览（表格）</h3>
+    <h3 class="exec-title">三年路径一览</h3>
     <p class="exec-tag"><strong>AI 竞猜预测运营边投边回本</strong> · 算力与 AI 三年合计 <strong>$26–38M</strong>（Y1 <strong>$2.6–3.9M</strong> → Y2 GPU <strong>$10–15M</strong> → Y3 多区自建 <strong>$13.5–19.5M</strong>）</p>
     <table class="exec-table">
       <thead>
@@ -255,10 +359,10 @@
 
   <div class="verdict">
     <svg class="ico"><use href="#i-check"/></svg>
-    <p><strong>结论：可行。</strong>云先行 → 混合云 → 部分自建。算力与播放、转码分钟、推理 Token、盘口并发可计量；B 轮前后 GPU CapEx 在 100 万用户档具备经济合理性。</p>
+    <p><strong>结论：可行。</strong>云先行 → 混合云 → 部分自建。算力与播放、转码分钟、推理 Token、话题市场并发可计量；B 轮前后 GPU CapEx 在 100 万用户档具备经济合理性。</p>
   </div>
 
-  <h2><svg class="ico"><use href="#i-zap"/></svg>四大算力板块（图文）</h2>
+  <h2><svg class="ico"><use href="#i-zap"/></svg>四大算力板块</h2>
   <div class="pillars">
     <article class="pillar">
       <div class="icon-wrap"><svg width="28" height="28"><use href="#i-brain"/></svg></div>
@@ -311,7 +415,7 @@
   </div>
 
   <h2><svg class="ico"><use href="#i-trend"/></svg>三年投入一览</h2>
-  <div class="icon-grid">
+  <div class="icon-grid invest-bar">
     <div class="icon-card"><svg class="ico-lg"><use href="#i-calendar"/></svg><b>$2.6–3.9M</b><span>第 1 年 · 四板块+合规计量</span></div>
     <div class="icon-card"><svg class="ico-lg"><use href="#i-server"/></svg><b>$10–15M</b><span>第 2 年 · GPU CapEx 启动</span></div>
     <div class="icon-card"><svg class="ico-lg"><use href="#i-globe"/></svg><b>$13.5–19.5M</b><span>第 3 年 · 多区+出海 API</span></div>
@@ -400,18 +504,19 @@
 
   <h2><svg class="ico"><use href="#i-users"/></svg>用户增长 × 算力回收 × 国际竞猜预测新赛道</h2>
   <p class="lead" style="margin:-4px 0 14px;font-size:12px">全球预测市场由赛事、选举、宏观与航天事件驱动流量；<strong>短视频把国际热点变成可交易内容</strong>，用户增长越快，单位算力摊薄越快，回收越短。</p>
-  <div class="icon-grid" style="margin-bottom:14px">
-    <div class="icon-card"><svg class="ico-lg"><use href="#i-globe"/></svg><b>$1T</b><span>2030 全球预测交易量（行业预测）</span></div>
+  <div class="icon-grid invest-bar" style="margin-bottom:14px">
+    <div class="icon-card"><svg class="ico-lg"><use href="#i-globe"/></svg><b>$1万亿</b><span>2030 全球预测交易量（行业预测）</span></div>
     <div class="icon-card"><svg class="ico-lg"><use href="#i-trend"/></svg><b>Polymarket</b><span>单季 $262亿 · 验证赛道</span></div>
     <div class="icon-card"><svg class="ico-lg"><use href="#i-zap"/></svg><b>华语空白</b><span>短视频×竞猜预测 · 首站机会</span></div>
   </div>
-  <div class="icon-rows">
-    <div class="icon-row"><svg class="ico"><use href="#i-users"/></svg><div class="t">上线初期 · 1 万注册<small>DAU ~3.5k · 算力 $4–6万/月 · 小众赛事试水</small></div><div class="v">占收入 &gt;100%</div></div>
-    <div class="icon-row"><svg class="ico"><use href="#i-check"/></svg><div class="t">规模验证 · 10 万<small>世界杯/大选类内容带量 · 算力占收入 30–45%</small></div><div class="v">OPEX 临界</div></div>
-    <div class="icon-row"><svg class="ico"><use href="#i-server"/></svg><div class="t">扩张 · 100 万<small>多区合规 · 国际 Feed 并行 · 启动 GPU 自建</small></div><div class="v">占收入 8–22%</div></div>
-    <div class="icon-row"><svg class="ico"><use href="#i-trend"/></svg><div class="t">成熟 · 500 万<small>全球 IP 日历化 · Token/API 出海摊薄算力</small></div><div class="v">占收入 5–15%</div></div>
+  <div class="icon-rows compute-ratio">
+    <div class="icon-rows-head"><span>用户规模阶段</span><span>算力支出占收入</span></div>
+    <div class="icon-row"><svg class="ico"><use href="#i-users"/></svg><div class="t">上线初期 · 1 万注册<small>DAU ~3.5k · 算力 OPEX $4–6万/月 · 小众赛事试水</small></div><div class="v"><span class="v-label">算力支出占收入</span><strong>&gt;100%</strong></div></div>
+    <div class="icon-row"><svg class="ico"><use href="#i-check"/></svg><div class="t">规模验证 · 10 万<small>世界杯/大选类内容带量 · 算力 OPEX 即将被收入覆盖</small></div><div class="v"><span class="v-label">算力支出占收入</span><strong>30–45%</strong><span class="v-note">OPEX 临界</span></div></div>
+    <div class="icon-row"><svg class="ico"><use href="#i-server"/></svg><div class="t">扩张 · 100 万<small>多区合规 · 国际 Feed 并行 · 启动 GPU 自建</small></div><div class="v"><span class="v-label">算力支出占收入</span><strong>8–22%</strong></div></div>
+    <div class="icon-row"><svg class="ico"><use href="#i-trend"/></svg><div class="t">成熟 · 500 万<small>全球 IP 日历化 · Token/API 出海摊薄算力</small></div><div class="v"><span class="v-label">算力支出占收入</span><strong>5–15%</strong></div></div>
   </div>
-  <p class="fn">边际：DAU +1 万 ≈ +$1.2–2.0万/月（云）→ 自建后 +$0.7–1.2万。事件月 GMV 跳升时，算力回收可缩短 <strong>30–40%</strong>。可持续线：算力费 ≤ 月收入 × 25%。</p>
+  <p class="fn">右列口径：<strong>算力支出占平台收入</strong> = 当月云 GPU / 转码 / CDN / 推理等 OPEX（含摊销）÷ 当月平台收入（手续费+订阅+B 端，估）。边际：DAU +1 万 ≈ +$1.2–2.0万/月算力（云）→ 自建后 +$0.7–1.2万。可持续线：<strong>算力支出 ≤ 月收入 25%</strong>。</p>
 
   <h2><svg class="ico"><use href="#i-server"/></svg>算力机资产 · 回本 · 盈利 · 估值</h2>
   <p class="lead" style="margin:-4px 0 12px;font-size:12px">商业模式：<strong>短视频获客 + 预测交易变现</strong>（手续费 / 订阅 / B 端）。下列盈利时间为平台整体模型；算力 CapEx 回本单独计算。</p>
@@ -460,11 +565,15 @@
     <svg class="ico" style="width:18px;height:18px"><use href="#i-building"/></svg>短视频×预测 · 估值与上市市值（与算力资产阶段对应）
   </h3>
   <div class="val-strip">
-    <div class="icon-card"><svg class="ico-lg"><use href="#i-zap"/></svg><b>$50M</b><span>Pre-Seed<br>10 万用户前</span></div>
-    <div class="icon-card"><svg class="ico-lg"><use href="#i-trend"/></svg><b>$30–50M</b><span>A 轮<br>已盈利 · 云算力</span></div>
-    <div class="icon-card"><svg class="ico-lg"><use href="#i-server"/></svg><b>$50B</b><span>B 轮<br>100 万用户 · GPU 入表</span></div>
-    <div class="icon-card"><svg class="ico-lg"><use href="#i-globe"/></svg><b>$200B</b><span>C 轮<br>300 万用户 · Pre-IPO</span></div>
-    <div class="icon-card"><svg class="ico-lg"><use href="#i-rocket"/></svg><b>$500B</b><span>IPO 市值<br>500 万用户 · $450M+ ARR</span></div>
+    <div class="val-strip-row">
+      <div class="icon-card"><svg class="ico-lg"><use href="#i-zap"/></svg><b>$50M</b><span>Pre-Seed<br>10 万用户前</span></div>
+      <div class="icon-card"><svg class="ico-lg"><use href="#i-trend"/></svg><b>$30–50M</b><span>A 轮<br>已盈利 · 云算力</span></div>
+      <div class="icon-card"><svg class="ico-lg"><use href="#i-server"/></svg><b>$50B</b><span>B 轮<br>100 万用户 · GPU 入表</span></div>
+    </div>
+    <div class="val-strip-row">
+      <div class="icon-card"><svg class="ico-lg"><use href="#i-globe"/></svg><b>$200B</b><span>C 轮<br>300 万用户 · Pre-IPO</span></div>
+      <div class="icon-card"><svg class="ico-lg"><use href="#i-rocket"/></svg><b>$500B</b><span>IPO 市值<br>500 万用户 · $450M+ ARR</span></div>
+    </div>
   </div>
   <table class="compact" style="margin-top:10px">
     <tr>
@@ -487,7 +596,7 @@
 
   <h2><svg class="ico"><use href="#i-football"/></svg>场景耦合（预测 × 短视频）</h2>
   <div class="scene-grid">
-    <div class="scene"><svg class="ico"><use href="#i-zap"/></svg><div><b>赛事月</b><p>峰值转码+CDN · AI 解说 · 盘口 WS · 卖 Feed</p></div></div>
+    <div class="scene"><svg class="ico"><use href="#i-zap"/></svg><div><b>赛事月</b><p>峰值转码+CDN · AI 解说 · 话题市场 WS · 卖 Feed</p></div></div>
     <div class="scene"><svg class="ico"><use href="#i-rocket"/></svg><div><b>航天 / 月球 IP</b><p>切片分发 · 知识库问答 · 里程碑合约</p></div></div>
     <div class="scene"><svg class="ico"><use href="#i-film"/></svg><div><b>日常 UGC</b><p>审核转码 · 推荐 · 创作者手续费</p></div></div>
     <div class="scene"><svg class="ico"><use href="#i-layers"/></svg><div><b>B2B 嵌入</b><p>托管分发 · 微调 · Token 计费</p></div></div>
@@ -496,7 +605,7 @@
   <h2><svg class="ico"><use href="#i-building"/></svg>资本运作 &amp; IPO 时间表</h2>
   <p class="lead" style="margin-top:-6px">与算力里程碑对齐：每轮融资对应可验收的 infra 与用户锚点。</p>
   <div class="timeline-cap">
-    <div class="tl-item"><div class="tl-dot"><svg class="ico"><use href="#i-check"/></svg></div><b>天使</b><span>已完成 · $10–15M 估值<br>合规底座</span></div>
+    <div class="tl-item highlight"><div class="tl-dot"><svg class="ico"><use href="#i-check"/></svg></div><b>天使</b><span>已完成 · $10–15M 估值<br>合规底座</span></div>
     <div class="tl-item"><div class="tl-dot"><svg class="ico"><use href="#i-zap"/></svg></div><b>Pre-Seed</b><span>$5M · $50M 估值<br>云 AI+转码 · 上线后半年 10万用户</span></div>
     <div class="tl-item"><div class="tl-dot"><svg class="ico"><use href="#i-trend"/></svg></div><b>A 轮</b><span>Y1 · $30–50M<br>内部 AI 扩编 · B2B MVP</span></div>
     <div class="tl-item"><div class="tl-dot"><svg class="ico"><use href="#i-server"/></svg></div><b>B 轮</b><span>Y2 · <strong>$50B</strong> 估值<br>100万用户 · GPU CapEx</span></div>
